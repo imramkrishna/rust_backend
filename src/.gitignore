@@ -1,0 +1,10 @@
+# IDE
+.idea/
+.vscode/
+
+# Rust
+/target/
+Cargo.lock
+
+# Environment
+.env
