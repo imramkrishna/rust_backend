@@ -2,22 +2,17 @@ mod handlers;
 mod db;
 use sqlx;
 use handlers::*;
-use axum::{
-    routing::{get,post},
-    Router
-};
+use axum::{handler, routing::{get, post}, Router};
 use std::net::SocketAddr;
-use crate::db::get_user_by_id::get_user_by_id;
 
 pub async fn new_app() {
     tracing_subscriber::fmt::init();
     let app = Router::new()
         .route("/", get(root_handler))
         .route("/test",get(test_handler))
-        .route("/get-user-by-id/:id",get(get_user_by_id))
+        .route("/get-user-by-id/{id}",get(get_user))
         .route("/login",post(login_handler))
         .route("/register",post(register_handler));
-
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("listening on {}", addr);
     let pool=db::pool::init_pool().await;
